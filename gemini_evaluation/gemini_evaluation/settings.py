@@ -30,7 +30,7 @@ import os
 import google.generativeai as genai
 
 genai.configure(api_key=os.environ["GEMINI_API_KEY"])
-
+# GITHUB_TOKEN = os.environ("GITHUB_TOKEN")
 
 
 # Application definition
