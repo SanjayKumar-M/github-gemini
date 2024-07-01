@@ -1,0 +1,26 @@
+# Ignore .env files
+.env
+
+# Ignore Python bytecode
+*.pyc
+__pycache__/
+
+# Ignore Django migration files
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+
+# Ignore media
+media
+
+# Ignore virtual environments
+venv/
+env/
+
+# Ignore database files
+*.sqlite3
+
+# Ignore macOS files
+.DS_Store
