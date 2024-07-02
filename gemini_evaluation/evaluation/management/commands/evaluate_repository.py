@@ -163,4 +163,4 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(response.text))
 
 
-#this is gonna be the best and some most useful reso
+#some updated are required since there are lot to train because of the model upgrades
