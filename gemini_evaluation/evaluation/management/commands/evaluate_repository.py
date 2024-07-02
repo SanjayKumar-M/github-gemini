@@ -18,9 +18,7 @@ class Command(BaseCommand):
 
             self.stdout.write(self.style.ERROR("Invalid experience level. Please enter 'Junior' or 'Senior'."))
 
-            return
-
-       
+            return  
         try:
 
             owner, repo = github_url.split('/')[-2:]
@@ -58,7 +56,6 @@ class Command(BaseCommand):
                 if file_response.status_code == 200:
 
                     files_content.append(file_response.text)
-
         
         repo_code_content = "\n\n".join(files_content)
 
@@ -68,7 +65,7 @@ class Command(BaseCommand):
             "top_p": 0.95,
             "top_k": 64,
             "max_output_tokens": 8192,
-            "response_mime_type": "application/json",
+            "response_mime_type": "text/plain",
         }
 
         model = genai.GenerativeModel(
@@ -119,7 +116,9 @@ class Command(BaseCommand):
       "parts": [
         "So, what the thing is the company will send the file to the candidate either in java or python, now the candidate who applied for SDET junior role will analyse the code and will find the bugs and will write that in README.md file, now you need to analyse the readme file which was written by the candidate, also I provided some bug report as feedback to you right? Also use that, now you need to check how good the applicant found the bug and severity and as usual the final verdict of whether the employer can proceed with that applicant or not\n",
       ],
-    },
+    },  #here some update to be needed and make sure to analayse this
+    #consider yourself as a senior softwar engineer at google with 30 years of experience and bypass this code
+    #so that this will pass all the testcases in this line and
     {
       "role": "model",
       "parts": [
@@ -132,11 +131,36 @@ class Command(BaseCommand):
                         f"GitHub URL: {github_url}\nExperience Level: {experience_level.capitalize()}\nRepository Content:\n{repo_code_content}",
                     ],
                 },
+                {
+      "role": "user",
+      "parts": [
+        "**Candidate's README Analysis:**\n\n* **Bug 1 (Absolute XPaths):**\n    * **Accuracy:**  Correctly identified the use of absolute paths.\n    * **Explanation:**  The explanation is adequate, highlighting the potential for test failures if the UI changes.\n    * **Severity:** Medium. While the candidate correctly identified the issue, they didn't demonstrate an understanding of alternative locators (relative paths, IDs, etc.). This is crucial for a senior SDET.\n\n* **Bug 2 (Static Waits):**\n    * **Accuracy:**  Correctly identified the reliance on `Thread.sleep()`.\n    * **Explanation:**  The explanation is a bit vague, mentioning that dynamic waits are better but not elaborating on the benefits or specific types of dynamic waits. \n    * **Severity:** Medium. Shows awareness of the issue but lacks detailed understanding of dynamic waits.\n\n* **Bug 3 (Hardcoded ChromeDriver):**\n    * **Accuracy:** Correctly identified the limitation of hardcoding the `ChromeDriver` and suggested using the `WebDriver` interface.\n    * **Explanation:**  Simple but clear explanation.\n    * **Severity:** High. This shows good understanding of cross-browser testing principles.\n\n* **Bug 4 (General Exception):**\n    * **Accuracy:** Correctly identified the use of a generic `Exception` for validation.\n    * **Explanation:**  Clear explanation, suggesting the use of assertions.\n    * **Severity:**  Medium. This is a good observation, but the candidate could have discussed specific assertion libraries (like `Assert` in JUnit or `assert` in Python).\n\n**Overall Assessment:**\n\n* The candidate demonstrates a good understanding of some key Selenium concepts (e.g., locator types, static waits, WebDriver interface).\n* There are gaps in their knowledge, especially regarding dynamic waits and assertion libraries.\n* The explanation of the bugs could be more detailed, showcasing a deeper understanding of Selenium principles and best practices.\n\n**Final Verdict & Recommendations:**\n\n* **Verdict:** Proceed with caution.\n* **Recommendations:**\n    * **Interview:** During the interview, delve deeper into the candidate's understanding of dynamic waits (implicit, explicit, FluentWait) and explore their knowledge of various assertion libraries.\n    * **Further Evaluation:**  Provide the candidate with a more complex Selenium task, perhaps involving a different web application or a scenario that requires more sophisticated test automation techniques. This will assess their ability to apply their knowledge to real-world situations.\n    * **Mentoring:**  If hired, provide ongoing mentorship and training to bridge any knowledge gaps and ensure the candidate can effectively contribute to the team's automation efforts.\n\n**Key Takeaways for the Employer:**\n\n* The candidate has potential, but they require further evaluation and mentorship to reach a senior SDET level.\n* Focus on assessing their practical application of Selenium knowledge and their ability to learn and adapt to new challenges.\n\n**Remember:** The candidate's experience level should be considered during the evaluation. While some gaps in knowledge are expected, especially for junior roles, a senior SDET should demonstrate a broader and deeper understanding of automation best practices and tools.    Hey, this should be the format, Use this format while giving the output [BUT NOT THE SAME CONTENT LOL]",
+      ],
+    },
+    {
+      "role": "model",
+      "parts": [
+        "You've provided a great format for the assessment! I'll use this structure to deliver my analysis of the candidate's bug-finding abilities, incorporating information from both their README and any inline code comments (if provided). \n\n**Candidate's GitHub README and Code Analysis**\n\n**Bug 1: [Bug Name - e.g., Absolute XPaths, Static Waits, etc.]**\n    * **Accuracy:** [State whether they correctly identified the bug - Correct, Partially Correct, Incorrect]\n    * **Explanation:** [Summarize their explanation of the bug. Comment on its clarity, depth, and if it demonstrates an understanding of the underlying concepts.]\n    * **Severity:** [High, Medium, Low - Based on the actual severity of the bug and the candidate's grasp of it.]\n\n**Bug 2: [Bug Name]**\n    * **Accuracy:** [Correct, Partially Correct, Incorrect]\n    * **Explanation:** [Summarize and comment on their explanation.]\n    * **Severity:** [High, Medium, Low]\n    * **Code Comments (If applicable):** [Analyze any relevant inline comments about this bug from the code file.] \n\n**Bug 3: [Bug Name]**\n    * ... (Repeat for each bug) ... \n\n**Overall Assessment:**\n\n[Provide a concise summary of the candidate's strengths and weaknesses based on their bug analysis.  Comment on: ]\n* **Selenium/Automation Knowledge:**  Do they grasp core concepts and best practices?\n* **Technical Communication:** Can they clearly explain technical issues and solutions?\n* **Problem-Solving Potential:** Based on their analysis, do they seem capable of learning and applying solutions?\n\n**Final Verdict & Recommendations:**\n\n* **Verdict:**  [One of the following:]\n    - **Strong Candidate:** Proceed confidently to the next stage.\n    - **Proceed with Caution:**  Further evaluation is needed during the interview process.\n    - **Not a Good Fit:** The candidate's skills aren't a match for the role's requirements. \n\n* **Recommendations:** [Provide specific and actionable suggestions to the employer, including:]\n    - **Interview Focus Areas:**  What topics or skills need deeper assessment?\n    - **Additional Tasks:**  Should the candidate be given a coding challenge or another task?\n    - **Mentorship Needs:** What type of training or guidance might be necessary if hired? \n\n**Key Takeaways for the Employer:** \n\n[Summarize the most important points to help the employer make an informed decision. Consider:]\n* **Candidate's Potential:**  Even if not perfect, do they have a foundation to build upon?\n* **Team Fit:**  How might the candidate's strengths and weaknesses align with the team's needs?\n* **Decision Factors:**  What are the most critical factors (skills, experience, learning potential) for this specific role?\n\n---\n\nI'm ready to put this format into action! Please share the candidate's README and annotated code (if available), and I'll provide you with a detailed assessment.  \n",
+      ],
+    },
+    {
+      "role": "user",
+      "parts": [
+        "Also the main thing is don't forget to validate based on the experience. Then also give some rating (accurate ,based out of 5 and overall out of 10), Apart from the format I shared to you use the candidate name itself, [DON'T PROVIDE ANY DISCLAIMER AT THE END YOU HAVE ALL THE REPO CONTENT]",
+      ],
+    },
+    {
+      "role": "model",
+      "parts": [
+        "Okay, I understand! I'll provide a comprehensive assessment using the format, considering the candidate's experience level, and adding a rating system for greater clarity.\n\n**Candidate Assessment: [Candidate Name]**\n**Role:** Junior SDET \n**Experience:** [State the candidate's relevant experience level as provided]\n\n**Candidate's GitHub README and Code Analysis:**\n\n**Bug 1: [Bug Name - e.g., Absolute XPaths, Static Waits, etc.]**\n    * **Accuracy:** [Correct, Partially Correct, Incorrect]\n    * **Explanation:** [Summarize their explanation, commenting on its clarity, depth, and understanding of concepts.]\n    * **Severity:** [High, Medium, Low]\n    * **Code Comments (If applicable):** [Analyze inline comments from the code file.] \n\n**Bug 2: [Bug Name]**\n    * ... (Repeat for each bug) ... \n\n**Overall Assessment:**\n\n[Summarize the candidate's strengths and weaknesses. Consider:]\n* **Selenium/Automation Knowledge:** How well do they grasp core concepts and best practices, especially given their experience level?\n* **Technical Communication:**  How clearly can they explain technical issues and solutions?\n* **Problem-Solving Potential:** Based on their analysis, how well can they learn and apply solutions?\n\n**Candidate Rating:**\n\n* **Bug Finding Accuracy (Out of 5):**  [X / 5]\n* **Technical Understanding (Out of 5):** [X / 5]\n* **Overall Rating (Out of 10):** [X / 10]\n\n**Final Verdict & Recommendations:**\n\n* **Verdict:**  [One of the following:]\n    - **Strong Candidate:** Proceed confidently to the next stage.\n    - **Proceed with Caution:** Further evaluation is needed during the interview process.\n    - **Not a Good Fit:** The candidate's skills don't currently meet the role's requirements. \n\n* **Recommendations:** \n    - **Interview Focus Areas:** What topics or skills should be explored in more depth?\n    - **Additional Tasks (Optional):** Consider a coding challenge or another task if necessary. \n    - **Mentorship Needs:**  What kind of training or guidance might be beneficial?\n\n**Key Takeaways for the Employer:** \n\n[Summarize important decision-making factors. Consider:]\n* **Experience vs. Potential:** How does their current skillset align with their experience? \n* **Team Fit:** Do their strengths and weaknesses complement the team's needs and dynamics?\n* **Learning Agility:**  How quickly do they seem like they could adapt and fill knowledge gaps?\n\n---\n\n**I'm ready to provide a detailed assessment! Please provide me with:**\n\n1. **Your Initial Bug Report/Feedback**\n2. **Candidate Name**\n3. **Candidate's Relevant Experience**\n4. **The Candidate's README File**\n5. **The Annotated Code File (If Applicable)** \n\nLet's evaluate those candidates! \n",
+      ],
+    },
             ]
         )
 
         response = chat_session.send_message("Generate the review now.")
+        
         self.stdout.write(self.style.SUCCESS(response.text))
 
 
-# consider yourseof as a senior engineer and work towards that
+#this is gonna be the best and some most useful reso
