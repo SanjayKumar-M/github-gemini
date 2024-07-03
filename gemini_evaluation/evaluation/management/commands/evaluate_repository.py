@@ -13,7 +13,7 @@ class Command(BaseCommand):
     help = 'Evaluate a GitHub repository'
 
     def handle(self, *args, **kwargs):
-        # Configure Generative AI API key
+
         genai.configure(api_key=os.environ["GEMINI_API_KEY"])
 
         github_url = input("Enter the GitHub URL: ")
@@ -44,7 +44,7 @@ class Command(BaseCommand):
 
             pr_data = response.json()
             pr_description = pr_data['body'] or ""
-            
+
             # Get PR comments
             comments_url = pr_data['comments_url']
             comments_response = requests.get(comments_url, headers=headers)
@@ -76,18 +76,27 @@ class Command(BaseCommand):
             contents = contents_response.json()
             file_contents = ""
             bug_report = ""
+            readme_content = ""
+
             for item in contents:
-                if item['type'] == 'file' and item['name'].endswith(('.py', '.java')):
+                if item['type'] == 'file':
                     file_content = get_file_content(item['download_url'], headers)
-                    file_contents += f"File: {item['name']}\n{file_content}\n\n"
-                    
-                    # Look for bug report comments
-                    lines = file_content.split('\n')
-                    for i, line in enumerate(lines):
-                        if 'bug' in line.lower() or 'issue' in line.lower():
-                            bug_report += f"File: {item['name']}, Line {i+1}: {line.strip()}\n"
+                    if item['name'].lower() == 'readme.md':
+                        readme_content = file_content
+                    elif item['name'].endswith(('.py', '.java')):
+                        file_contents += f"File: {item['name']}\n{file_content}\n\n"
+                        
+                        # Look for bug report comments
+                        lines = file_content.split('\n')
+                        for i, line in enumerate(lines):
+                            if 'bug' in line.lower() or 'issue' in line.lower():
+                                bug_report += f"File: {item['name']}, Line {i+1}: {line.strip()}\n"
             
-            content_for_analysis = f"Bug Report:\n{bug_report}\n\nRepository Files:\n{file_contents}" if bug_report else f"No explicit bug report found. Repository Files:\n{file_contents}"
+            
+            if readme_content:
+                content_for_analysis = f"README File Content:\n{readme_content}\n\nBug Report:\n{bug_report}\n\nRepository Files:\n{file_contents}"
+            else:
+                content_for_analysis = f"Bug Report:\n{bug_report}\n\nRepository Files:\n{file_contents}"
 
         generation_config = {
             "temperature": 0.9,
@@ -118,18 +127,29 @@ class Command(BaseCommand):
                 {
                     "role": "user",
                     "parts": [
-                        "Make sure to follow this structure. Candidate name, Where the bug found (in pr or code comments or readme), Bugs found by the candidate, Other available bugs, Severiety and explanation, Analysis, Final verdict, Recommendation"
+                        "Make sure to analyze the code and README file (if available) line by line to avoid mistakes and to avoid skipping bug comments in the code. I need accurate results."
                     ],
                 },
                 {
                     "role": "model",
                     "parts": [
-                        "Understood. I'll follow this format only"
+                        "Understood. I'll go through the code file line by line to find the comments and to avoid mistakes. And will follow the same approach for the README file as well if it is available."
+                    ],
+                },
+                {
+                    "role": "user",
+                    "parts": [
+                        "Make sure to follow this structure: Candidate name, Where the bug was found (in PR, code comments, or README), Bugs found by the candidate, Other available bugs, Severity and explanation, Analysis, Final verdict, Recommendation."
+                    ],
+                },
+                {
+                    "role": "model",
+                    "parts": [
+                        "Understood. I'll follow this format."
                     ],
                 },
             ]
         )
 
         response = chat_session.send_message(f"GitHub URL: {github_url}\nExperience Level: {experience_level.capitalize()}\nCandidate's Submission:\n{content_for_analysis}")
-
         self.stdout.write(self.style.SUCCESS(response.text))
