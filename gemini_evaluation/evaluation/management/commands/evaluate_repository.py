@@ -153,3 +153,12 @@ class Command(BaseCommand):
 
         response = chat_session.send_message(f"GitHub URL: {github_url}\nExperience Level: {experience_level.capitalize()}\nCandidate's Submission:\n{content_for_analysis}")
         self.stdout.write(self.style.SUCCESS(response.text))
+
+        while True:
+            question = input("ANY QUESTIONS REGARDING MY FEEDBACK OR EVALUATION? (Type 'EXIT' to end the session): ").strip()
+            if question.lower() == 'exit':
+                self.stdout.write(self.style.SUCCESS("Session ended."))
+                break
+            else:
+                follow_up_response = chat_session.send_message(question)
+                self.stdout.write(self.style.SUCCESS(follow_up_response.text))
