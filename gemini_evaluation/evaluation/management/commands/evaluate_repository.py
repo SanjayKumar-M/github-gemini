@@ -45,12 +45,12 @@ class Command(BaseCommand):
             pr_data = response.json()
             pr_description = pr_data['body'] or ""
 
-            # Get PR comments
+
             comments_url = pr_data['comments_url']
             comments_response = requests.get(comments_url, headers=headers)
             pr_comments = "\n".join(comment['body'] for comment in comments_response.json()) if comments_response.status_code == 200 else ""
 
-            # Get changed files
+     
             files_url = pr_data['url'] + "/files"
             files_response = requests.get(files_url, headers=headers)
             file_changes = "\n".join(f"File: {file['filename']}\nChanges: {file['patch']}" for file in files_response.json() if 'patch' in file) if files_response.status_code == 200 else ""
@@ -58,7 +58,7 @@ class Command(BaseCommand):
             content_for_analysis = f"PR Description:\n{pr_description}\n\nPR Comments:\n{pr_comments}\n\nChanged Files:\n{file_changes}"
 
         else:
-            # Repository URL handling
+      
             try:
                 parts = github_url.split('/')
                 owner = parts[-2]
@@ -86,7 +86,7 @@ class Command(BaseCommand):
                     elif item['name'].endswith(('.py', '.java')):
                         file_contents += f"File: {item['name']}\n{file_content}\n\n"
                         
-                        # Look for bug report comments
+                       
                         lines = file_content.split('\n')
                         for i, line in enumerate(lines):
                             if 'bug' in line.lower() or 'issue' in line.lower():
