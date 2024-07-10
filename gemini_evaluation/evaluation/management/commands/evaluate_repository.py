@@ -2,6 +2,7 @@ import os
 import requests
 import google.generativeai as genai
 from django.core.management.base import BaseCommand
+from evaluation.management.commands.prompts import CHATS
 
 def get_file_content(file_url, headers):
     file_response = requests.get(file_url, headers=headers)
@@ -109,47 +110,10 @@ class Command(BaseCommand):
             model_name="gemini-1.5-flash",
             generation_config=generation_config,
         )
-
         chat_session = model.start_chat(
-            history=[
-                {
-                    "role": "user",
-                    "parts": [
-                        "You are a senior QA tester with 20 years of experience. Your task is to evaluate bug reports from junior SDET candidates applying for an internship. The candidates were supposed to analyze a piece of code and report bugs in one of three ways: through a README file, comments in the code, or a pull request (PR). Your job is to assess their findings, considering the following key issues:\n\n1) Use of absolute/static paths for element locators instead of dynamic/relative paths.\n2) Use of Thread.sleep() instead of dynamic waits.\n3) Lack of Page Object Model implementation.\n4) Missing necessary package/class imports.\n5) Initializing the driver only for Chrome, limiting cross-browser testing.\n6) Incorrect use of static members inside non-static classes.\n7) Inappropriate use of exceptions for validation.\n\nPlease provide:\n1. A summary of the bugs the candidate found, mapping them to the key issues above when possible. If bug reports are in code comments, analyze these carefully.\n2. An assessment of the severity and importance of their findings.\n3. An evaluation of any bugs they missed or misunderstood.\n4. A final verdict on whether to proceed with the candidate's application, including strengths and areas for improvement.\n\nIf no explicit bug report is found, please analyze the code itself for potential issues and provide an assessment of the candidate's coding practices in relation to QA testing principles.\n\nRemember, these are intern candidates, so focus on their potential and understanding of core concepts rather than expecting perfect solutions."
-                    ],
-                },
-                {
-                    "role": "model",
-                    "parts": [
-                        "Understood. I'll thoroughly analyze the candidate's submission, including any bug reports in README files, code comments, or pull requests. If no explicit bug report is found, I'll examine the code itself for potential issues and assess the candidate's coding practices in relation to QA testing principles. I'll provide a comprehensive evaluation covering the points you've outlined, keeping in mind that these are intern candidates and focusing on their potential and understanding of core concepts. Please provide me with the candidate's submission, and I'll begin my analysis."
-                    ],
-                },
-                {
-                    "role": "user",
-                    "parts": [
-                        "Make sure to analyze the code and README file (if available) line by line to avoid mistakes and to avoid skipping bug comments in the code. I need accurate results."
-                    ],
-                },
-                {
-                    "role": "model",
-                    "parts": [
-                        "Understood. I'll go through the code file line by line to find the comments and to avoid mistakes. And will follow the same approach for the README file as well if it is available."
-                    ],
-                },
-                {
-                    "role": "user",
-                    "parts": [
-                        "Make sure to follow this structure: Candidate name, Where the bug was found (in PR, code comments, or README), Bugs found by the candidate, Other available bugs, Severity and explanation, Analysis, Final verdict, Recommendation."
-                    ],
-                },
-                {
-                    "role": "model",
-                    "parts": [
-                        "Understood. I'll follow this format."
-                    ],
-                },
-            ]
-        )
+        history= CHATS
+)
+
 
         response = chat_session.send_message(f"GitHub URL: {github_url}\nExperience Level: {experience_level.capitalize()}\nCandidate's Submission:\n{content_for_analysis}")
         self.stdout.write(self.style.SUCCESS(response.text))
@@ -162,3 +126,6 @@ class Command(BaseCommand):
             else:
                 follow_up_response = chat_session.send_message(question)
                 self.stdout.write(self.style.SUCCESS(follow_up_response.text))
+
+
+# the next part is to optimize the prompts to generate more accurate results
