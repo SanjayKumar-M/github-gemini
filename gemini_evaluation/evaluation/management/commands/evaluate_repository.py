@@ -4,6 +4,7 @@ import google.generativeai as genai
 from django.core.management.base import BaseCommand
 from evaluation.management.commands.prompts import CHATS
 
+
 def get_file_content(file_url, headers):
     file_response = requests.get(file_url, headers=headers)
     if file_response.status_code == 200:
@@ -128,4 +129,3 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(follow_up_response.text))
 
 
-# the next part is to optimize the prompts to generate more accurate results

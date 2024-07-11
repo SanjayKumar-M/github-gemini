@@ -26,7 +26,7 @@ CHATS = [
     {
       "role": "user",
       "parts": [
-        "Fine. Now I will give you the assignment for junior and the feedback, use this\nfor JUNIOR\n",
+        "Fine. Now I will give you the assignment for junior and the feedback, use this\nfor Junior\n",
       ],
     },
     {
@@ -68,20 +68,57 @@ CHATS = [
     {
       "role": "model",
       "parts": [
-        "Excellent! I'm prepped and ready to review those candidate submissions. I've internalized your detailed assignment feedback, the expected differences between Junior and Senior SDETs, and the key criteria for assessing technical ability *and* those vital leadership/mentoring qualities in a senior candidate.  \n\nJust share each repo, let me know if it's from a Junior or Senior applicant, and consider me on the case! I'm eager to help you find the perfect fit for your team. \n",
+        "Sure! I'm prepped and ready to review those candidate submissions. I've internalized your detailed assignment feedback, the expected differences between Junior and Senior SDETs, and the key criteria for assessing technical ability *and* those vital leadership/mentoring qualities in a senior candidate.  \n\nJust share each repo, let me know if it's from a Junior or Senior applicant, and consider me on the case! I'm eager to help you find the perfect fit for your team. \n",
       ],
     },
    
     {
       "role": "user",
       "parts": [
-        "One important thing. Never forget to go through the entire code of the repo. Because the candidate might comment in any of the code file , so don't miss that.",
+        "Make sure to go through every file in the repo, first go through the README.md file for report, then go through the code for comments, search for the lines starting with '//' these are comments, then if i give Pull request link, go through that to analyse the comments",
       ],
     },
     {
       "role": "model",
       "parts": [
         "Ok. Apart from readme file, the candidate might comment on some code file as well. I will go through the entire codebase to keep track on that. So that i will not miss anythin. \n",
+      ],
+    },
+    
+    {
+      "role": "user",
+      "parts": [
+        "You need not find difficulties in finding junior or senior, we have 2 assignments separated for junior and senior. For Junior.  Code Review Assignment_JrSDET (1).java this file only will be there, for senior we use to share a repo entirely like you see in this image:, Understood?\n",
+      ],
+    },
+    {
+      "role": "model",
+      "parts": [
+        "Perfect! Thanks for clarifying. I've adjusted my mental filing system:\n\n* **Junior SDETs:** I'll be expecting a single `.java` file for their submission. My focus will be on the fundamentals of testing, basic Selenium, clear bug reporting, and, importantly, signs of potential for learning and growth.\n* **Senior SDETs:** Full repo evaluations like the one in the image. I'll be meticulous about the README, code comments, potential PRs, and, critically, their grasp of framework design, automation best practices, and ability to communicate complex technical ideas effectively.\n\nI'm ready when you are! Share those submissions, and let's find you some exceptional SDETs! \n",
+      ],
+    },
+     {
+      "role": "user",
+      "parts": [
+        "Now I need you to generate a accurate report based on this format: Candidate name, Level: Jr or Sr, Bugs he found , Bugs he missed, Severities of bug he found, Final verdict, Recommendation. And don't forget I already give the sample report feedback for those assignments, Use that as reference and also evaluate based on the bugs they found as well. understood?\n",
+      ],
+    },
+    {
+      "role": "model",
+      "parts": [
+        "Crystal clear! I'm ready to generate concise and insightful candidate reports using the format you've provided:\n\n**Candidate Report Template:**\n\n* **Candidate Name:** [Candidate's Name]\n* **Level:** Junior SDET / Senior SDET\n* **Bugs Found:**  \n    * [List of bugs they identified, described clearly and concisely]\n* **Bugs Missed:**  \n    * [List of significant bugs from the \"expected feedback\" that they didn't catch]\n* **Severities of Bugs Found:** \n    * [Categorize bugs they found as Critical, Major, or Minor] \n* **Final Verdict:** \n    * Strong Yes / Yes (Potential) / No\n    * [A brief, decisive statement justifying your verdict based on ALL factors]\n* **Recommendation:**\n    * [Specific, actionable recommendations for the candidate, whether it's areas for improvement, potential training, or highlighting their strengths for the next interview stage. Be constructive, even for \"Strong Yes\" candidates! ]\n\n**My Approach (Blending Your Feedback with Candidate Performance):**\n\n1. **Your Feedback as the Foundation:** I'll use the detailed feedback you provided for each assignment level as a benchmark for identifying missed issues and evaluating the candidate's grasp of best practices.\n\n2. **Candidate's Findings as the Differentiator:** The bugs *they* found reveal their thought process, testing approach, and how they prioritize issues. I'll carefully analyze these alongside your expectations. \n\n3. **Holistic Assessment:** Technical skill is essential, but communication, problem-solving, and growth potential are equally crucial, especially for Senior roles. I'll factor these aspects into the verdict and recommendations.\n\n4. **Clarity and Actionability:** My goal is to provide reports that are:\n    *  **Easy to Understand:** Concise language, clear bug descriptions, no technical jargon overload.\n    * **Useful for Decision-Making:**  Directly supporting your hiring choices. \n    *  **Valuable for the Candidate:**  Even if it's not a \"yes,\" the feedback should help them improve.  \n\nI'm confident that by working together, we can use this evaluation process to identify outstanding Junior and Senior SDETs who will thrive on your team. Let's get started! Please share the first candidate's submission whenever you're ready, i will first go through the README.md file, then code file and finally PR if they gave.\n",
+      ],
+    },
+    {
+      "role": "user",
+      "parts": [
+        "Make sure to go through every file in the repo, first go through the README.md file for report, then go through the code for comments, search for the lines starting with '//' these are comments, then if i give Pull request link, go through that to analyse the comments\n",
+      ],
+    },
+    {
+      "role": "model",
+      "parts": [
+        "Understood! You've given me a crystal-clear workflow for reviewing these candidates' submissions. Here's how I'll approach each repo:\n\n1. **README.md First:** This is the candidate's formal report.  I'll carefully analyze it for structure, clarity, technical depth, and suggested solutions (especially important for seniors!).\n\n2. **Code Deep Dive:**\n   * **Inline Comments (`//`):**  I won't miss these! They'll provide valuable insight into the candidate's thought process as they explored the code. \n   * **Targeted Analysis:**  I understand the code itself is the assignment.  I'll use your \"expected feedback\" and my expertise to evaluate:\n      * Functionality: Does the code even work as intended?\n      * Selenium/Automation Skills: Locator strategies, waits, error handling, etc.\n      * Code Quality:  Structure, readability, adherence to conventions, and (for seniors) design patterns.\n   * **Beyond the \"Bugs\":** I'll be looking for signs of a good tester's mindset, even if they didn't catch every issue *you* identified.  \n\n3. **Pull Request (If Applicable):**\n    * **PR Comments:** I'll treat these with the same importance as a formal report - looking for clear communication, actionable suggestions, and professionalism.\n    * **Git Proficiency:** For seniors, a clean, well-structured PR is almost a given. For juniors, it's a bonus and a chance to assess their potential with version control. \n\n4. **Putting It All Together:**\n   * **Candidate Level:** I'll keep in mind whether it's a junior or senior submission, adjusting my expectations for experience accordingly.\n   * **The Big Picture:** I'm not just looking for bug-finders; I'm helping you find potential team members.  Communication, problem-solving, and growth potential are key.\n\nI'm ready to dive in whenever you are!  Let's find those talented SDETs. \n",
       ],
     },
   ]
