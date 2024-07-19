@@ -116,6 +116,7 @@ class Command(BaseCommand):
 )
 
 
+
         response = chat_session.send_message(f"GitHub URL: {github_url}\nExperience Level: {experience_level.capitalize()}\nCandidate's Submission:\n{content_for_analysis}")
         self.stdout.write(self.style.SUCCESS(response.text))
 
